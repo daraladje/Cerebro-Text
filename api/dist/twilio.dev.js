@@ -152,12 +152,12 @@ router.post('/query', function _callee4(req, res) {
           [user, answeringFor].forEach(function (u) {
             client.calls.create({
               method: 'POST',
-              url: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/:' + u.answering || u.user_id,
+              url: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.answering || u.user_id,
               to: u.phone,
               from: twilioPhone,
               statusCallbackEvent: ['completed'],
               statusCallbackMethod: 'POST',
-              statusCallback: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/end/:' + u.user_id
+              statusCallback: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/end/' + u.user_id
             }).then(function (call) {
               return process.stdout.write("Called ".concat(u.phone));
             });
