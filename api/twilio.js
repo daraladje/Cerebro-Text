@@ -82,7 +82,9 @@ router.post('/query', async (req, res) => {
 
   // If sender is currently an "expert" (in the queue to answer y or n)
   const isCurrent = user.current;
+  console.log(user);
   if (isCurrent) {
+    console.log(isCurrent);
     var answeringFor = await getUserFromId(user.answering);
     answeringFor = answeringFor.rows[0];
     if (message == 'y' || message == 'yes') {
