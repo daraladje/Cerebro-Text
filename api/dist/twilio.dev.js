@@ -44,8 +44,7 @@ router.post('/trigger/:id', function _callee(req, res) {
         case 4:
           user = _context.sent;
           name = user.rows[0].name.split(' ')[0];
-          console.log(user.rows[0].phone);
-          phone = '+1' + user.rows[0].phone.replaceAll('-', '');
+          phone = '+1' + user.rows[0].phone;
           client.studio.flows(flowId).executions.create({
             to: phone,
             from: twilioPhone,
@@ -54,20 +53,20 @@ router.post('/trigger/:id', function _callee(req, res) {
             }
           }).then(function (execution) {});
           res.json(user);
-          _context.next = 15;
+          _context.next = 14;
           break;
 
-        case 12:
-          _context.prev = 12;
+        case 11:
+          _context.prev = 11;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0.message);
 
-        case 15:
+        case 14:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 12]]);
+  }, null, null, [[0, 11]]);
 });
 router.post('/voice/:id', function _callee2(req, res) {
   var id, response, dial;
