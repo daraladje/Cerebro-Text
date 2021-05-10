@@ -38,6 +38,7 @@ router.get('/', async (req, res) => {
 
 // Get user
 router.get('/:id', async (req, res) => {
+  console.log('Hello');
   try {
     const { id } = req.params;
     const user = await getUserFromId(id);

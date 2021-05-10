@@ -69,20 +69,19 @@ var getUserFromId = function getUserFromId(id) {
 
         case 3:
           res = _context3.sent;
-          console.log('Hello');
           return _context3.abrupt("return", res);
 
-        case 8:
-          _context3.prev = 8;
+        case 7:
+          _context3.prev = 7;
           _context3.t0 = _context3["catch"](0);
           console.log(_context3.t0.message);
 
-        case 11:
+        case 10:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[0, 8]]);
+  }, null, null, [[0, 7]]);
 };
 
 var setUserToCurrentExpert = function setUserToCurrentExpert(asker, expert) {
