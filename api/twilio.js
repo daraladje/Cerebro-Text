@@ -65,6 +65,7 @@ router.post('/voice/:id', async (req, res) => {
 });
 
 router.post('/voice/end/:id', async (req, res) => {
+  console.log('ENDED CALL');
   await removeFromCurrent(req.params.id);
 });
 
@@ -82,9 +83,7 @@ router.post('/query', async (req, res) => {
 
   // If sender is currently an "expert" (in the queue to answer y or n)
   const isCurrent = user.current;
-  console.log(user);
   if (isCurrent) {
-    console.log(isCurrent);
     var answeringFor = await getUserFromId(user.answering);
     answeringFor = answeringFor.rows[0];
     if (message == 'y' || message == 'yes') {
