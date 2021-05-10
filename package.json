@@ -1,0 +1,27 @@
+{
+  "name": "cerebro-mvp",
+  "version": "1.0.0",
+  "description": "text-bot q&a service",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "keywords": [],
+  "author": "Dara Ladjevardian",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^9.0.1",
+    "express": "^4.17.1",
+    "googleapis": "^39.2.0",
+    "pg": "^8.6.0",
+    "twilio": "^3.62.0",
+    "vcards-js": "^2.10.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^15.0.1",
+    "nodemon": "^2.0.7"
+  }
+}
