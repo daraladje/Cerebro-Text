@@ -91,14 +91,15 @@ router.post('/query', async (req, res) => {
           .create({
             method: 'POST',
             url:
-              'https://k7txxr.expose.sh/api/twilio/voice/:' + u.answering ||
-              u.user_id,
+              'https://cerebro-qa.herokuapp.com/api/twilio/voice/:' +
+                u.answering || u.user_id,
             to: u.phone,
             from: twilioPhone,
             statusCallbackEvent: ['completed'],
             statusCallbackMethod: 'POST',
             statusCallback:
-              'https://k7txxr.expose.sh/api/twilio/voice/end/:' + u.user_id,
+              'https://cerebro-qa.herokuapp.com/api/twilio/voice/end/:' +
+              u.user_id,
           })
           .then((call) => process.stdout.write(`Called ${u.phone}`));
       });
