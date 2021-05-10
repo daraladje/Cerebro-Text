@@ -86,29 +86,30 @@ router.get('/:id', function _callee3(req, res) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
-          console.log('Hello');
-          _context3.prev = 1;
+          _context3.prev = 0;
           id = req.params.id;
-          _context3.next = 5;
+          _context3.next = 4;
           return regeneratorRuntime.awrap(getUserFromId(id));
 
-        case 5:
+        case 4:
           user = _context3.sent;
+          console.log('after user');
+          console.log(user);
           res.json(user);
-          _context3.next = 12;
+          _context3.next = 13;
           break;
 
-        case 9:
-          _context3.prev = 9;
-          _context3.t0 = _context3["catch"](1);
+        case 10:
+          _context3.prev = 10;
+          _context3.t0 = _context3["catch"](0);
           console.error(_context3.t0.message);
 
-        case 12:
+        case 13:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[1, 9]]);
+  }, null, null, [[0, 10]]);
 }); // Add Knowledge
 
 router.put('/:id', function _callee4(req, res) {
