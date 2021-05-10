@@ -32,6 +32,7 @@ router.post('/trigger/:id', async (req, res) => {
       id,
     ]);
     const name = user.rows[0].name.split(' ')[0];
+    console.log(user.rows[0].phone);
     const phone = '+1' + user.rows[0].phone.replaceAll('-', '');
     client.studio
       .flows(flowId)

@@ -93,23 +93,21 @@ router.get('/:id', function _callee3(req, res) {
 
         case 4:
           user = _context3.sent;
-          console.log('after user');
-          console.log(user);
           res.json(user);
-          _context3.next = 13;
+          _context3.next = 11;
           break;
 
-        case 10:
-          _context3.prev = 10;
+        case 8:
+          _context3.prev = 8;
           _context3.t0 = _context3["catch"](0);
           console.error(_context3.t0.message);
 
-        case 13:
+        case 11:
         case "end":
           return _context3.stop();
       }
     }
-  }, null, null, [[0, 10]]);
+  }, null, null, [[0, 8]]);
 }); // Add Knowledge
 
 router.put('/:id', function _callee4(req, res) {
