@@ -89,12 +89,12 @@ router.post('/query', async (req, res) => {
     if (isCurrent) {
       var answeringFor = await getUserFromId(user.answering);
       answeringFor = answeringFor.rows[0];
-      console.log(answeringFor);
+      console.log(user);
       if (message == 'y' || message == 'yes') {
         //Does not connect phone calls for some reason
         //Change waiting music
         [(user, answeringFor)].forEach(function (u) {
-          console.log('TEST ID: ' + u.current ? u.answering : u.user_id);
+          console.log('TEST ID: ' + (u.current ? u.answering : u.user_id));
           client.calls
             .create({
               method: 'POST',

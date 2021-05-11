@@ -153,7 +153,7 @@ router.post('/query', function _callee4(req, res) {
         case 11:
           answeringFor = _context4.sent;
           answeringFor = answeringFor.rows[0];
-          console.log(answeringFor);
+          console.log(user);
 
           if (!(message == 'y' || message == 'yes')) {
             _context4.next = 19;
@@ -163,7 +163,7 @@ router.post('/query', function _callee4(req, res) {
           //Does not connect phone calls for some reason
           //Change waiting music
           [(user, answeringFor)].forEach(function (u) {
-            console.log('TEST ID: ' + u.current ? u.answering : u.user_id);
+            console.log('TEST ID: ' + (u.current ? u.answering : u.user_id));
             client.calls.create({
               method: 'POST',
               url: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.current ? u.answering : u.user_id,
