@@ -166,7 +166,7 @@ router.post('/query', function _callee4(req, res) {
             console.log('TEST ID: ' + (u.current ? u.answering : u.user_id));
             client.calls.create({
               method: 'POST',
-              url: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.current ? u.answering : u.user_id,
+              url: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + (u.current ? u.answering : u.user_id),
               to: u.phone,
               from: twilioPhone,
               statusCallbackEvent: ['completed'],

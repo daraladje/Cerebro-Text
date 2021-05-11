@@ -99,9 +99,8 @@ router.post('/query', async (req, res) => {
             .create({
               method: 'POST',
               url:
-                'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.current
-                  ? u.answering
-                  : u.user_id,
+                'https://cerebro-qa.herokuapp.com/api/twilio/voice/' +
+                (u.current ? u.answering : u.user_id),
               to: u.phone,
               from: twilioPhone,
               statusCallbackEvent: ['completed'],
