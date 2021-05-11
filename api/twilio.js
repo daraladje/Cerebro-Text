@@ -92,13 +92,18 @@ router.post('/query', async (req, res) => {
       //Does not connect phone calls for some reason
       //Change waiting music
       [(user, answeringFor)].forEach(function (u) {
-        console.log('TEST ID: ' + u.answering || u.user_id);
+        console.log(
+          'TEST ID: ' + u.answering == null ? u.user_id : u.answering
+        );
         client.calls
           .create({
             method: 'POST',
             url:
               'https://cerebro-qa.herokuapp.com/api/twilio/voice/' +
-                u.answering || u.user_id,
+                u.answering ==
+              null
+                ? u.user_id
+                : u.answering,
             to: u.phone,
             from: twilioPhone,
             statusCallbackEvent: ['completed'],
