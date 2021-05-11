@@ -65,8 +65,10 @@ router.post('/voice/:id', async (req, res) => {
 });
 
 router.post('/voice/end/:id', async (req, res) => {
-  console.log('ENDED CALL');
-  await removeFromCurrent(req.params.id);
+  try {
+    await removeFromCurrent(req.params.id);
+    res.status(200);
+  } catch (error) {}
 });
 
 // Interpret Message from User
@@ -87,7 +89,10 @@ router.post('/query', async (req, res) => {
     var answeringFor = await getUserFromId(user.answering);
     answeringFor = answeringFor.rows[0];
     if (message == 'y' || message == 'yes') {
-      [user, answeringFor].forEach(function (u) {
+      //Does not connect phone calls for some reason
+      //Change waiting music
+      console.log('TEST ID: ' + u.answering || u.user_id);
+      [(user, answeringFor)].forEach(function (u) {
         client.calls
           .create({
             method: 'POST',

@@ -99,16 +99,25 @@ router.post('/voice/end/:id', function _callee3(req, res) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
-          console.log('ENDED CALL');
+          _context3.prev = 0;
           _context3.next = 3;
           return regeneratorRuntime.awrap(removeFromCurrent(req.params.id));
 
         case 3:
+          res.status(200);
+          _context3.next = 8;
+          break;
+
+        case 6:
+          _context3.prev = 6;
+          _context3.t0 = _context3["catch"](0);
+
+        case 8:
         case "end":
           return _context3.stop();
       }
     }
-  });
+  }, null, null, [[0, 6]]);
 }); // Interpret Message from User
 
 router.post('/query', function _callee4(req, res) {
@@ -133,7 +142,7 @@ router.post('/query', function _callee4(req, res) {
           isCurrent = user.current;
 
           if (!isCurrent) {
-            _context4.next = 20;
+            _context4.next = 21;
             break;
           }
 
@@ -145,11 +154,14 @@ router.post('/query', function _callee4(req, res) {
           answeringFor = answeringFor.rows[0];
 
           if (!(message == 'y' || message == 'yes')) {
-            _context4.next = 17;
+            _context4.next = 18;
             break;
           }
 
-          [user, answeringFor].forEach(function (u) {
+          //Does not connect phone calls for some reason
+          //Change waiting music
+          console.log('TEST ID: ' + u.answering || u.user_id);
+          [(user, answeringFor)].forEach(function (u) {
             client.calls.create({
               method: 'POST',
               url: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.answering || u.user_id,
@@ -164,84 +176,84 @@ router.post('/query', function _callee4(req, res) {
           });
           return _context4.abrupt("return");
 
-        case 17:
+        case 18:
           twiml.message("".concat(answeringFor.name, ": ").concat(answeringFor.askertopic, " denied by ").concat(user.name), {
             to: adminNumber
           });
-          _context4.next = 20;
+          _context4.next = 21;
           return regeneratorRuntime.awrap(removeFromCurrent(user.user_id));
 
-        case 20:
+        case 21:
           if (!(message.startsWith('a: ') && from == adminNumber)) {
-            _context4.next = 35;
+            _context4.next = 36;
             break;
           }
 
           // Dara suggests connection: a: e <expert_id> q <asker_id>
           expert = parseInt(message.split('e')[1].split('q')[0].trim());
           asker = parseInt(message.split('e')[1].split('q')[1].trim());
-          _context4.next = 25;
+          _context4.next = 26;
           return regeneratorRuntime.awrap(getUserFromId(asker));
 
-        case 25:
+        case 26:
           askerInfo = _context4.sent;
           askerInfo = askerInfo.rows[0];
-          _context4.next = 29;
+          _context4.next = 30;
           return regeneratorRuntime.awrap(setUserToCurrentExpert(asker, expert));
 
-        case 29:
+        case 30:
           currentExpert = _context4.sent;
           currentExpert = currentExpert.rows[0];
           console.log(askerInfo);
           twiml.message("".concat(askerInfo.name, " wants to know: ").concat(askerInfo.askertopic, ". We think you might be able to help! Are you available? Reply 'Y' for yes or 'N' for no"), {
             to: '+1' + currentExpert.phone
           });
-          _context4.next = 58;
+          _context4.next = 59;
           break;
 
-        case 35:
+        case 36:
           if (!(message.startsWith('as: ') && from == adminNumber)) {
-            _context4.next = 38;
+            _context4.next = 39;
             break;
           }
 
-          _context4.next = 58;
+          _context4.next = 59;
           break;
 
-        case 38:
+        case 39:
           if (!message.startsWith('add')) {
-            _context4.next = 46;
+            _context4.next = 47;
             break;
           }
 
           // Add knowledge to user profile
           newKnowledge = message.split('add')[1].trim();
-          _context4.next = 42;
+          _context4.next = 43;
           return regeneratorRuntime.awrap(addNewKnowledge(user.user_id, newKnowledge));
 
-        case 42:
+        case 43:
           knowledgeUpdate = _context4.sent;
           twiml.message("'".concat(newKnowledge, "' added!"));
-          _context4.next = 58;
+          _context4.next = 59;
           break;
 
-        case 46:
+        case 47:
           if (!message.startsWith('question:')) {
-            _context4.next = 57;
+            _context4.next = 58;
             break;
           }
 
           // Extract topic from question
           topic = message.split('question:')[1].trim();
-          _context4.next = 50;
+          _context4.next = 51;
           return regeneratorRuntime.awrap(setAskerTopic(user.user_id, topic));
 
-        case 50:
+        case 51:
           twiml.message('Searching for available experts...');
-          _context4.next = 53;
+          _context4.next = 54;
           return regeneratorRuntime.awrap(searchExperts(topic));
 
-        case 53:
+        case 54:
           match = _context4.sent;
 
           // If no user found for specific topic
@@ -256,21 +268,21 @@ router.post('/query', function _callee4(req, res) {
             });
           }
 
-          _context4.next = 58;
+          _context4.next = 59;
           break;
 
-        case 57:
+        case 58:
           if (message != 'n' && message != 'no') {
             twiml.message("Sorry! That message isn't supported yet. You can either: \n \n Ask a question by sending 'QUESTION: ' following by your statement or topic of interest \n \n Add new knowledge to your profile with 'ADD'");
           }
 
-        case 58:
+        case 59:
           res.writeHead(200, {
             'Content-Type': 'text/xml'
           });
           res.end(twiml.toString());
 
-        case 60:
+        case 61:
         case "end":
           return _context4.stop();
       }
