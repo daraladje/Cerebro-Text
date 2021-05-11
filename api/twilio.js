@@ -73,105 +73,110 @@ router.post('/voice/end/:id', async (req, res) => {
 
 // Interpret Message from User
 router.post('/query', async (req, res) => {
-  const twiml = new MessagingResponse();
-  // Message Body
-  const message = req.body.Body.toLowerCase();
+  try {
+    const twiml = new MessagingResponse();
+    // Message Body
+    const message = req.body.Body.toLowerCase();
 
-  // Phone Number of Sender
-  const from = req.body.From;
+    // Phone Number of Sender
+    const from = req.body.From;
 
-  // Get User Info of Sender
-  const user = await getUserFromPhone(from);
+    // Get User Info of Sender
+    const user = await getUserFromPhone(from);
 
-  // If sender is currently an "expert" (in the queue to answer y or n)
-  const isCurrent = user.current;
-  if (isCurrent) {
-    var answeringFor = await getUserFromId(user.answering);
-    answeringFor = answeringFor.rows[0];
-    if (message == 'y' || message == 'yes') {
-      //Does not connect phone calls for some reason
-      //Change waiting music
-      [(user, answeringFor)].forEach(function (u) {
-        console.log('TEST ID: ' + u.current ? u.answering : u.user_id);
-        client.calls
-          .create({
-            method: 'POST',
-            url:
-              'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.current
-                ? u.answering
-                : u.user_id,
-            to: u.phone,
-            from: twilioPhone,
-            statusCallbackEvent: ['completed'],
-            statusCallbackMethod: 'POST',
-            statusCallback:
-              'https://cerebro-qa.herokuapp.com/api/twilio/voice/end/' +
-              u.user_id,
-          })
-          .then((call) => process.stdout.write(`Called ${u.phone}`));
-      });
-      return;
-    } else {
-      twiml.message(
-        `${answeringFor.name}: ${answeringFor.askertopic} denied by ${user.name}`,
-        {
-          to: adminNumber,
-        }
-      );
-      await removeFromCurrent(user.user_id);
-    }
-  }
-  if (message.startsWith('a: ') && from == adminNumber) {
-    // Dara suggests connection: a: e <expert_id> q <asker_id>
-    var expert = parseInt(message.split('e')[1].split('q')[0].trim());
-    var asker = parseInt(message.split('e')[1].split('q')[1].trim());
-    var askerInfo = await getUserFromId(asker);
-    askerInfo = askerInfo.rows[0];
-    var currentExpert = await setUserToCurrentExpert(asker, expert);
-    currentExpert = currentExpert.rows[0];
-    console.log(askerInfo);
-    twiml.message(
-      `${askerInfo.name} wants to know: ${askerInfo.askertopic}. We think you might be able to help! Are you available? Reply 'Y' for yes or 'N' for no`,
-      {
-        to: '+1' + currentExpert.phone,
+    // If sender is currently an "expert" (in the queue to answer y or n)
+    const isCurrent = user.current;
+    if (isCurrent) {
+      var answeringFor = await getUserFromId(user.answering);
+      answeringFor = answeringFor.rows[0];
+      console.log(answeringFor);
+      if (message == 'y' || message == 'yes') {
+        //Does not connect phone calls for some reason
+        //Change waiting music
+        [(user, answeringFor)].forEach(function (u) {
+          console.log('TEST ID: ' + u.current ? u.answering : u.user_id);
+          client.calls
+            .create({
+              method: 'POST',
+              url:
+                'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.current
+                  ? u.answering
+                  : u.user_id,
+              to: u.phone,
+              from: twilioPhone,
+              statusCallbackEvent: ['completed'],
+              statusCallbackMethod: 'POST',
+              statusCallback:
+                'https://cerebro-qa.herokuapp.com/api/twilio/voice/end/' +
+                u.user_id,
+            })
+            .then((call) => process.stdout.write(`Called ${u.phone}`));
+        });
+        return;
+      } else {
+        twiml.message(
+          `${answeringFor.name}: ${answeringFor.askertopic} denied by ${user.name}`,
+          {
+            to: adminNumber,
+          }
+        );
+        await removeFromCurrent(user.user_id);
       }
-    );
-  } else if (message.startsWith('as: ') && from == adminNumber) {
-    // Dara sends personalized message: ADMIN SEND: p <person_id> m <message>
-  } else if (message.startsWith('add')) {
-    // Add knowledge to user profile
-    var newKnowledge = message.split('add')[1].trim();
-    var knowledgeUpdate = await addNewKnowledge(user.user_id, newKnowledge);
-    twiml.message(`'${newKnowledge}' added!`);
-  } else if (message.startsWith('question:')) {
-    // Extract topic from question
-    var topic = message.split('question:')[1].trim();
-    await setAskerTopic(user.user_id, topic);
-    twiml.message('Searching for available experts...');
-    var match = await searchExperts(topic);
-
-    // If no user found for specific topic
-    if (!match) {
-      twiml.message(`${user.name}: ${topic}`, {
-        to: '+18324542040',
-      });
-    } else {
-      const currentExpert = setUserToCurrentExpert(asker, expert);
+    }
+    if (message.startsWith('a: ') && from == adminNumber) {
+      // Dara suggests connection: a: e <expert_id> q <asker_id>
+      var expert = parseInt(message.split('e')[1].split('q')[0].trim());
+      var asker = parseInt(message.split('e')[1].split('q')[1].trim());
+      var askerInfo = await getUserFromId(asker);
+      askerInfo = askerInfo.rows[0];
+      var currentExpert = await setUserToCurrentExpert(asker, expert);
+      currentExpert = currentExpert.rows[0];
+      console.log(askerInfo);
       twiml.message(
-        `${asker.name} wants to know: ${topic}. We think you might be able to help! Are you available? Reply 'Y' for yes, 'N' for no`,
+        `${askerInfo.name} wants to know: ${askerInfo.askertopic}. We think you might be able to help! Are you available? Reply 'Y' for yes or 'N' for no`,
         {
           to: '+1' + currentExpert.phone,
         }
       );
-    }
-  } else if (message != 'n' && message != 'no') {
-    twiml.message(
-      "Sorry! That message isn't supported yet. You can either: \n \n Ask a question by sending 'QUESTION: ' following by your statement or topic of interest \n \n Add new knowledge to your profile with 'ADD'"
-    );
-  }
+    } else if (message.startsWith('as: ') && from == adminNumber) {
+      // Dara sends personalized message: ADMIN SEND: p <person_id> m <message>
+    } else if (message.startsWith('add')) {
+      // Add knowledge to user profile
+      var newKnowledge = message.split('add')[1].trim();
+      var knowledgeUpdate = await addNewKnowledge(user.user_id, newKnowledge);
+      twiml.message(`'${newKnowledge}' added!`);
+    } else if (message.startsWith('question:')) {
+      // Extract topic from question
+      var topic = message.split('question:')[1].trim();
+      await setAskerTopic(user.user_id, topic);
+      twiml.message('Searching for available experts...');
+      var match = await searchExperts(topic);
 
-  res.writeHead(200, { 'Content-Type': 'text/xml' });
-  res.end(twiml.toString());
+      // If no user found for specific topic
+      if (!match) {
+        twiml.message(`${user.name}: ${topic}`, {
+          to: '+18324542040',
+        });
+      } else {
+        const currentExpert = setUserToCurrentExpert(asker, expert);
+        twiml.message(
+          `${asker.name} wants to know: ${topic}. We think you might be able to help! Are you available? Reply 'Y' for yes, 'N' for no`,
+          {
+            to: '+1' + currentExpert.phone,
+          }
+        );
+      }
+    } else if (message != 'n' && message != 'no') {
+      twiml.message(
+        "Sorry! That message isn't supported yet. You can either: \n \n Ask a question by sending 'QUESTION: ' following by your statement or topic of interest \n \n Add new knowledge to your profile with 'ADD'"
+      );
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/xml' });
+    res.end(twiml.toString());
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;
