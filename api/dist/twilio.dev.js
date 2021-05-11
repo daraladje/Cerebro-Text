@@ -161,10 +161,10 @@ router.post('/query', function _callee4(req, res) {
           //Does not connect phone calls for some reason
           //Change waiting music
           [(user, answeringFor)].forEach(function (u) {
-            console.log('TEST ID: ' + u.answering == null ? u.user_id : u.answering);
+            console.log('TEST ID: ' + u.current ? u.answering : u.user_id);
             client.calls.create({
               method: 'POST',
-              url: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.answering == null ? u.user_id : u.answering,
+              url: 'https://cerebro-qa.herokuapp.com/api/twilio/voice/' + u.current ? u.answering : u.user_id,
               to: u.phone,
               from: twilioPhone,
               statusCallbackEvent: ['completed'],
