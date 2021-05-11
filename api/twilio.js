@@ -51,17 +51,21 @@ router.post('/trigger/:id', async (req, res) => {
 });
 
 router.post('/voice/:id', async (req, res) => {
-  const { id } = req.params;
-  // Use the Twilio Node.js SDK to build an XML response
-  const response = new VoiceResponse();
-  const dial = response.dial();
-  dial.conference(id, {
-    startConferenceOnEnter: true,
-    endConferenceOnExit: true,
-  });
+  try {
+    const { id } = req.params;
+    // Use the Twilio Node.js SDK to build an XML response
+    const response = new VoiceResponse();
+    const dial = response.dial();
+    dial.conference(id, {
+      startConferenceOnEnter: true,
+      endConferenceOnExit: true,
+    });
 
-  res.writeHead(200, { 'Content-Type': 'text/xml' });
-  res.end(response.toString());
+    res.writeHead(200, { 'Content-Type': 'text/xml' });
+    res.end(response.toString());
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.post('/voice/end/:id', async (req, res) => {
@@ -89,12 +93,11 @@ router.post('/query', async (req, res) => {
     if (isCurrent) {
       var answeringFor = await getUserFromId(user.answering);
       answeringFor = answeringFor.rows[0];
-      console.log(user);
       if (message == 'y' || message == 'yes') {
         //Does not connect phone calls for some reason
         //Change waiting music
         [(user, answeringFor)].forEach(function (u) {
-          console.log('TEST ID: ' + (u.current ? u.answering : u.user_id));
+          console.log('TEST ID: ');
           client.calls
             .create({
               method: 'POST',
