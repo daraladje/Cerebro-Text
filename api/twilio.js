@@ -91,8 +91,8 @@ router.post('/query', async (req, res) => {
     if (message == 'y' || message == 'yes') {
       //Does not connect phone calls for some reason
       //Change waiting music
-      console.log('TEST ID: ' + u.answering || u.user_id);
       [(user, answeringFor)].forEach(function (u) {
+        console.log('TEST ID: ' + u.answering || u.user_id);
         client.calls
           .create({
             method: 'POST',
