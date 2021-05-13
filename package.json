@@ -16,6 +16,7 @@
     "dotenv": "^9.0.1",
     "express": "^4.17.1",
     "googleapis": "^39.2.0",
+    "openai-api": "^1.1.2",
     "pg": "^8.6.0",
     "twilio": "^3.62.0",
     "vcards-js": "^2.10.0"

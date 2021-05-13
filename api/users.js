@@ -13,7 +13,13 @@ router.post('/form_submit', async (req, res) => {
     const answers = req.body.form_response.answers;
     const name = answers[0].text;
     const email = answers[1].text;
-    const phone = answers[2].text;
+    var phone = answers[2].text;
+    if (phone.length == 10) {
+      phone = '+1' + phone;
+    }
+    if (phone.substr(0, 1) != '+') {
+      phone = '+' + phone;
+    }
     const knowledge = answers[3].text.split(',').map((x) => x.trim());
     const looking_for = answers[4].text.split(',').map((x) => x.trim());
     const newUser = await pool.query(

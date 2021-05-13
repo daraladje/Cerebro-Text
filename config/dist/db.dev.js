@@ -1,6 +1,7 @@
 "use strict";
 
-var Pool = require('pg').Pool;
+var Pool = require('pg').Pool; // Heroku
+
 
 var pool = new Pool({
   user: 'ktqpbkcxmwxqvw',
@@ -11,5 +12,13 @@ var pool = new Pool({
   ssl: {
     rejectUnauthorized: false
   }
-});
+}); // Local
+// const pool = new Pool({
+//   user: 'postgres',
+//   password: 'foundermentality',
+//   host: 'localhost',
+//   port: 5432,
+//   database: 'cerebro',
+// });
+
 module.exports = pool;

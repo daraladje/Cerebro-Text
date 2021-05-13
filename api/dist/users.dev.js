@@ -23,32 +23,41 @@ router.post('/form_submit', function _callee(req, res) {
           name = answers[0].text;
           email = answers[1].text;
           phone = answers[2].text;
+
+          if (phone.length == 10) {
+            phone = '+1' + phone;
+          }
+
+          if (phone.substr(0, 1) != '+') {
+            phone = '+' + phone;
+          }
+
           knowledge = answers[3].text.split(',').map(function (x) {
             return x.trim();
           });
           looking_for = answers[4].text.split(',').map(function (x) {
             return x.trim();
           });
-          _context.next = 9;
+          _context.next = 11;
           return regeneratorRuntime.awrap(pool.query('INSERT INTO users (name, email, phone, knowledge, looking_for) VALUES($1, $2, $3, $4, $5) RETURNING *', [name, email, phone, knowledge, looking_for]));
 
-        case 9:
+        case 11:
           newUser = _context.sent;
           res.json(newUser);
-          _context.next = 16;
+          _context.next = 18;
           break;
 
-        case 13:
-          _context.prev = 13;
+        case 15:
+          _context.prev = 15;
           _context.t0 = _context["catch"](0);
           console.error(_context.t0.message);
 
-        case 16:
+        case 18:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 13]]);
+  }, null, null, [[0, 15]]);
 }); // Get users
 
 router.get('/', function _callee2(req, res) {

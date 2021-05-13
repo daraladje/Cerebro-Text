@@ -7,6 +7,7 @@ CREATE TABLE users(
     looking_for text[],
     current boolean,
     answering VARCHAR(255),
-    askerTopic VARCHAR(1000)
+    askerTopic VARCHAR(1000),
+    matches: int[]
 );
 
