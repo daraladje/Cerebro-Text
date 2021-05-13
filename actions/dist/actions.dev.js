@@ -49,7 +49,7 @@ var searchExperts = function searchExperts(topic, userId) {
         case 6:
           users = _context.sent;
           users = users.rows.filter(function (x) {
-            return x.user_id != userId && user.activated == true;
+            return x.user_id != userId && x.activated == true;
           });
           availableSkills = []; // Get list of all available skills
 
@@ -139,8 +139,7 @@ var searchExperts = function searchExperts(topic, userId) {
 };
 
 var addMatches = function addMatches(id, matches) {
-  var _user;
-
+  var user;
   return regeneratorRuntime.async(function addMatches$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -150,8 +149,8 @@ var addMatches = function addMatches(id, matches) {
           return regeneratorRuntime.awrap(pool.query('UPDATE users SET matches = $1 WHERE user_id = $2', [matches, id]));
 
         case 3:
-          _user = _context2.sent;
-          return _context2.abrupt("return", _user);
+          user = _context2.sent;
+          return _context2.abrupt("return", user);
 
         case 7:
           _context2.prev = 7;
@@ -167,8 +166,7 @@ var addMatches = function addMatches(id, matches) {
 };
 
 var addNewKnowledge = function addNewKnowledge(id, knowledge) {
-  var _user2;
-
+  var user;
   return regeneratorRuntime.async(function addNewKnowledge$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
@@ -178,8 +176,8 @@ var addNewKnowledge = function addNewKnowledge(id, knowledge) {
           return regeneratorRuntime.awrap(pool.query('UPDATE users SET knowledge = knowledge || $1 WHERE user_id = $2', [[knowledge], id]));
 
         case 3:
-          _user2 = _context3.sent;
-          return _context3.abrupt("return", _user2);
+          user = _context3.sent;
+          return _context3.abrupt("return", user);
 
         case 7:
           _context3.prev = 7;
