@@ -49,8 +49,9 @@ var searchExperts = function searchExperts(topic, userId) {
         case 6:
           users = _context.sent;
           users = users.rows.filter(function (x) {
-            return x.user_id != userId && x.activated == true;
-          });
+            return x.user_id != userId;
+          }); // && x.activated == true);
+
           availableSkills = []; // Get list of all available skills
 
           users.forEach(function (user) {
@@ -122,20 +123,19 @@ var searchExperts = function searchExperts(topic, userId) {
           return regeneratorRuntime.awrap(addMatches(userId, matchIds));
 
         case 24:
-          console.log(users);
           return _context.abrupt("return", []);
 
-        case 28:
-          _context.prev = 28;
+        case 27:
+          _context.prev = 27;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0.message);
 
-        case 31:
+        case 30:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 28]]);
+  }, null, null, [[0, 27]]);
 };
 
 var addMatches = function addMatches(id, matches) {
@@ -343,7 +343,7 @@ var setUserToActivated = function setUserToActivated(id) {
       switch (_context10.prev = _context10.next) {
         case 0:
           _context10.next = 2;
-          return regeneratorRuntime.awrap(pool.query('UPDATE users SET activated = TRUE, WHERE user_id = $1 RETURNING *', [id]));
+          return regeneratorRuntime.awrap(pool.query('UPDATE users SET activated = TRUE WHERE user_id = $1 RETURNING *', [id]));
 
         case 2:
           user = _context10.sent;

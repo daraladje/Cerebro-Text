@@ -57,7 +57,7 @@ const searchExperts = async (topic, userId) => {
       : relevantTopic;
 
     var users = await getAllUsers();
-    users = users.rows.filter((x) => x.user_id != userId && x.activated == true);
+    users = users.rows.filter((x) => x.user_id != userId); // && x.activated == true);
     var availableSkills = [];
 
     // Get list of all available skills
@@ -118,7 +118,6 @@ const searchExperts = async (topic, userId) => {
       matchIds.push(u.user_id);
     });
     await addMatches(userId, matchIds);
-    console.log(users);
     return [];
   } catch (error) {
     console.log(error.message);
@@ -202,7 +201,7 @@ const setAskerTopic = async (id, topic) => {
 
 const setUserToActivated = async (id) => {
   const user = await pool.query(
-    'UPDATE users SET activated = TRUE, WHERE user_id = $1 RETURNING *',
+    'UPDATE users SET activated = TRUE WHERE user_id = $1 RETURNING *',
     [id]
   );
   return user;
