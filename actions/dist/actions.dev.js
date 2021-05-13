@@ -49,7 +49,7 @@ var searchExperts = function searchExperts(topic, userId) {
         case 6:
           users = _context.sent;
           users = users.rows.filter(function (x) {
-            return x.user_id != userId;
+            return x.user_id != userId && user.activated == true;
           });
           availableSkills = []; // Get list of all available skills
 
@@ -121,8 +121,8 @@ var searchExperts = function searchExperts(topic, userId) {
           return regeneratorRuntime.awrap(addMatches(userId, matchIds));
 
         case 23:
-          console.log(usersWithSkill);
-          return _context.abrupt("return", usersWithSkill);
+          console.log(users);
+          return _context.abrupt("return", []);
 
         case 27:
           _context.prev = 27;
@@ -138,7 +138,8 @@ var searchExperts = function searchExperts(topic, userId) {
 };
 
 var addMatches = function addMatches(id, matches) {
-  var user;
+  var _user;
+
   return regeneratorRuntime.async(function addMatches$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -148,8 +149,8 @@ var addMatches = function addMatches(id, matches) {
           return regeneratorRuntime.awrap(pool.query('UPDATE users SET matches = $1 WHERE user_id = $2', [matches, id]));
 
         case 3:
-          user = _context2.sent;
-          return _context2.abrupt("return", user);
+          _user = _context2.sent;
+          return _context2.abrupt("return", _user);
 
         case 7:
           _context2.prev = 7;
@@ -165,7 +166,8 @@ var addMatches = function addMatches(id, matches) {
 };
 
 var addNewKnowledge = function addNewKnowledge(id, knowledge) {
-  var user;
+  var _user2;
+
   return regeneratorRuntime.async(function addNewKnowledge$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
@@ -175,8 +177,8 @@ var addNewKnowledge = function addNewKnowledge(id, knowledge) {
           return regeneratorRuntime.awrap(pool.query('UPDATE users SET knowledge = knowledge || $1 WHERE user_id = $2', [[knowledge], id]));
 
         case 3:
-          user = _context3.sent;
-          return _context3.abrupt("return", user);
+          _user2 = _context3.sent;
+          return _context3.abrupt("return", _user2);
 
         case 7:
           _context3.prev = 7;
@@ -335,6 +337,27 @@ var setAskerTopic = function setAskerTopic(id, topic) {
   });
 };
 
+var setUserToActivated = function setUserToActivated(id) {
+  var user;
+  return regeneratorRuntime.async(function setUserToActivated$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          _context10.next = 2;
+          return regeneratorRuntime.awrap(pool.query('UPDATE users SET activated = TRUE, WHERE user_id = $1 RETURNING *', [id]));
+
+        case 2:
+          user = _context10.sent;
+          return _context10.abrupt("return", user);
+
+        case 4:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  });
+};
+
 module.exports = {
   addNewKnowledge: addNewKnowledge,
   getUserFromPhone: getUserFromPhone,
@@ -344,5 +367,6 @@ module.exports = {
   setUserToCurrentExpert: setUserToCurrentExpert,
   removeFromCurrent: removeFromCurrent,
   setAskerTopic: setAskerTopic,
-  addMatches: addMatches
+  addMatches: addMatches,
+  setUserToActivated: setUserToActivated
 };

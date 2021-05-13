@@ -10,6 +10,7 @@ const {
   getUserFromId,
   setAskerTopic,
   addMatches,
+  setUserToActivated,
 } = require('../actions/actions');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -31,7 +32,7 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
 router.post('/trigger/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await pool.query('SELECT * FROM users WHERE user_id = $1', [id]);
+    const user = await setUserToActivated(id);
     const name = user.rows[0].name.split(' ')[0];
     const phone = user.rows[0].phone;
     client.studio
@@ -210,7 +211,7 @@ router.post('/query', async (req, res) => {
         twiml.message(
           `${user.name} wants to know: ${topic}. We think you might be able to help! Are you available? Reply 'Y' for yes, 'N' for no`,
           {
-            to: match.phone,
+            to: adminNumber, //match.phone,
           }
         );
         twiml.message(

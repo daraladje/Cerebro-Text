@@ -14,7 +14,8 @@ var _require = require('../actions/actions'),
     removeFromCurrent = _require.removeFromCurrent,
     getUserFromId = _require.getUserFromId,
     setAskerTopic = _require.setAskerTopic,
-    addMatches = _require.addMatches;
+    addMatches = _require.addMatches,
+    setUserToActivated = _require.setUserToActivated;
 
 var dotenv = require('dotenv');
 
@@ -42,7 +43,7 @@ router.post('/trigger/:id', function _callee(req, res) {
           _context.prev = 0;
           id = req.params.id;
           _context.next = 4;
-          return regeneratorRuntime.awrap(pool.query('SELECT * FROM users WHERE user_id = $1', [id]));
+          return regeneratorRuntime.awrap(setUserToActivated(id));
 
         case 4:
           user = _context.sent;
@@ -342,7 +343,8 @@ router.post('/query', function _callee4(req, res) {
             return m.user_id;
           }).join(',');
           twiml.message("".concat(user.name, " wants to know: ").concat(topic, ". We think you might be able to help! Are you available? Reply 'Y' for yes, 'N' for no"), {
-            to: match.phone
+            to: adminNumber //match.phone,
+
           });
           twiml.message("".concat(user.name, ": ").concat(topic, " - sending out request to ").concat(match.name, ". List of potential matches: ").concat(experts), {
             to: adminNumber

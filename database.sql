@@ -8,6 +8,7 @@ CREATE TABLE users(
     current boolean,
     answering VARCHAR(255),
     askerTopic VARCHAR(1000),
-    matches: int[]
+    matches: int[],
+    activated boolean
 );
 
