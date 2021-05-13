@@ -198,7 +198,7 @@ router.post('/query', async (req, res) => {
       await setAskerTopic(user.user_id, topic);
       twiml.message('Searching for available experts...');
       var matches = await searchExperts(topic, user.user_id);
-      if (matches.length == 0) {
+      if (matches && matches.length == 0) {
         twiml.message(`${user.name}: ${topic}`, {
           to: adminNumber,
         });
