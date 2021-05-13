@@ -320,7 +320,7 @@ router.post('/query', function _callee4(req, res) {
         case 71:
           matches = _context4.sent;
 
-          if (!(matches && matches.length == 0)) {
+          if (!(!matches || matches.length == 0)) {
             _context4.next = 76;
             break;
           }
