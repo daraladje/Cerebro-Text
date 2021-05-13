@@ -79,7 +79,7 @@ const searchExperts = async (topic, userId) => {
         return b.score - a.score;
       })
       .filter((x) => x.score > 200)[0];
-
+    console.log(gptResponse.data.data);
     var usersWithSkill = [];
     if (potentialMatch) {
       var topSkill = availableSkills[potentialMatch.document];

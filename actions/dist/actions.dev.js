@@ -75,6 +75,7 @@ var searchExperts = function searchExperts(topic, userId) {
           }).filter(function (x) {
             return x.score > 200;
           })[0];
+          console.log(gptResponse.data.data);
           usersWithSkill = [];
 
           if (potentialMatch) {
@@ -117,24 +118,24 @@ var searchExperts = function searchExperts(topic, userId) {
             });
             matchIds.push(u.user_id);
           });
-          _context.next = 23;
+          _context.next = 24;
           return regeneratorRuntime.awrap(addMatches(userId, matchIds));
 
-        case 23:
+        case 24:
           console.log(users);
           return _context.abrupt("return", []);
 
-        case 27:
-          _context.prev = 27;
+        case 28:
+          _context.prev = 28;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0.message);
 
-        case 30:
+        case 31:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 27]]);
+  }, null, null, [[0, 28]]);
 };
 
 var addMatches = function addMatches(id, matches) {
