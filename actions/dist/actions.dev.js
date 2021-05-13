@@ -49,9 +49,8 @@ var searchExperts = function searchExperts(topic, userId) {
         case 6:
           users = _context.sent;
           users = users.rows.filter(function (x) {
-            return x.user_id != userId;
-          }); // && x.activated == true);
-
+            return x.user_id != userId && x.activated == true;
+          });
           availableSkills = []; // Get list of all available skills
 
           users.forEach(function (user) {
@@ -76,12 +75,6 @@ var searchExperts = function searchExperts(topic, userId) {
           }).filter(function (x) {
             return x.score > 200;
           })[0];
-          console.log(gptResponse.data.data.sort(function (a, b) {
-            return b.score - a.score;
-          }).filter(function (x) {
-            return x.score > 200;
-          }));
-          console.log(availableSkills[potentialMatch.document]);
           usersWithSkill = [];
 
           if (potentialMatch) {
@@ -124,23 +117,23 @@ var searchExperts = function searchExperts(topic, userId) {
             });
             matchIds.push(u.user_id);
           });
-          _context.next = 25;
+          _context.next = 23;
           return regeneratorRuntime.awrap(addMatches(userId, matchIds));
 
-        case 25:
+        case 23:
           return _context.abrupt("return", []);
 
-        case 28:
-          _context.prev = 28;
+        case 26:
+          _context.prev = 26;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0.message);
 
-        case 31:
+        case 29:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[0, 28]]);
+  }, null, null, [[0, 26]]);
 };
 
 var addMatches = function addMatches(id, matches) {

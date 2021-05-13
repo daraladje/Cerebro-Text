@@ -57,7 +57,7 @@ const searchExperts = async (topic, userId) => {
       : relevantTopic;
 
     var users = await getAllUsers();
-    users = users.rows.filter((x) => x.user_id != userId); // && x.activated == true);
+    users = users.rows.filter((x) => x.user_id != userId && x.activated == true);
     var availableSkills = [];
 
     // Get list of all available skills
@@ -79,14 +79,6 @@ const searchExperts = async (topic, userId) => {
         return b.score - a.score;
       })
       .filter((x) => x.score > 200)[0];
-    console.log(
-      gptResponse.data.data
-        .sort((a, b) => {
-          return b.score - a.score;
-        })
-        .filter((x) => x.score > 200)
-    );
-    console.log(availableSkills[potentialMatch.document]);
     var usersWithSkill = [];
     if (potentialMatch) {
       var topSkill = availableSkills[potentialMatch.document];
