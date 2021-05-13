@@ -356,7 +356,7 @@ router.post('/query', function _callee4(req, res) {
 
         case 84:
           if (message != 'n' && message != 'no' && message != 'y' && message != 'yes') {
-            twiml.message("Sorry! That message isn't supported yet. You can either: \n \n Ask a question by sending 'QUESTION: ' following by your statement or topic of interest \n \n Add new knowledge to your profile with 'ADD'");
+            twiml.message("Sorry! That message isn't supported yet. You can either: \n \n Ask a question by sending 'question: ' following by your statement or topic of interest \n \n Add new knowledge to your profile with 'ADD'");
           }
 
         case 85:

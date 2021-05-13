@@ -223,7 +223,7 @@ router.post('/query', async (req, res) => {
       }
     } else if (message != 'n' && message != 'no' && message != 'y' && message != 'yes') {
       twiml.message(
-        "Sorry! That message isn't supported yet. You can either: \n \n Ask a question by sending 'QUESTION: ' following by your statement or topic of interest \n \n Add new knowledge to your profile with 'ADD'"
+        "Sorry! That message isn't supported yet. You can either: \n \n Ask a question by sending 'question: ' following by your statement or topic of interest \n \n Add new knowledge to your profile with 'ADD'"
       );
     }
 
