@@ -180,7 +180,7 @@ router.post('/query', async (req, res) => {
         }
       );
     } else if (message.startsWith('as: ') && from == adminNumber) {
-      // Dara sends personalized message: ADMIN SEND: <person_id> m <message>
+      // Dara sends personalized message: as: <person_id> m <message>
       var person = parseInt(message.substr(3, message.indexOf(' ')).trim());
       var response = message.substr(message.indexOf(' ') + 3).trim();
       var personInfo = await getUserFromId(person);
